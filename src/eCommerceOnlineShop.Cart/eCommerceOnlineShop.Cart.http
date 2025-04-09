@@ -1,6 +1,21 @@
 @eCommerceOnlineShop.Cart_HostAddress = http://localhost:5188
 
-GET {{eCommerceOnlineShop.Cart_HostAddress}}/weatherforecast/
+### Get cart items
+GET {{eCommerceOnlineShop.Cart_HostAddress}}/api/cart/{{cartId}}/items
 Accept: application/json
+
+### Add item to cart
+POST {{eCommerceOnlineShop.Cart_HostAddress}}/api/cart/{{cartId}}/items
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Test Product",
+    "price": 10.99,
+    "quantity": 2
+}
+
+### Remove item from cart
+DELETE {{eCommerceOnlineShop.Cart_HostAddress}}/api/cart/{{cartId}}/items/{{itemId}}
 
 ###

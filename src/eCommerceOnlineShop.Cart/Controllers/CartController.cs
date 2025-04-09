@@ -6,14 +6,9 @@ namespace eCommerceOnlineShop.Cart.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CartController : ControllerBase
+    public class CartController(ICartService cartService) : ControllerBase
     {
-        private readonly ICartService _cartService;
-
-        public CartController(ICartService cartService)
-        {
-            _cartService = cartService;
-        }
+        private readonly ICartService _cartService = cartService;
 
         [HttpGet("{cartId}/items")]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems(Guid cartId)
