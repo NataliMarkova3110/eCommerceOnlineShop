@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D0579B31-5B76-4A3A-A8D7-A5F5506A690C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Cart", "src\eCommerceOnlineShop.Cart\eCommerceOnlineShop.Cart.csproj", "{FFAA6D3A-CB73-4D9A-8C5F-89FC42378587}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7580F94A-9679-451C-980B-5ED8ADCD973D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Cart.Tests", "tests\eCommerceOnlineShop.Cart.Tests\eCommerceOnlineShop.Cart.Tests.csproj", "{C2CFEA31-773F-417F-BF0E-763181690FB5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFAA6D3A-CB73-4D9A-8C5F-89FC42378587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFAA6D3A-CB73-4D9A-8C5F-89FC42378587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFAA6D3A-CB73-4D9A-8C5F-89FC42378587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFAA6D3A-CB73-4D9A-8C5F-89FC42378587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2CFEA31-773F-417F-BF0E-763181690FB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2CFEA31-773F-417F-BF0E-763181690FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2CFEA31-773F-417F-BF0E-763181690FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2CFEA31-773F-417F-BF0E-763181690FB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FFAA6D3A-CB73-4D9A-8C5F-89FC42378587} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
+		{C2CFEA31-773F-417F-BF0E-763181690FB5} = {7580F94A-9679-451C-980B-5ED8ADCD973D}
+	EndGlobalSection
+EndGlobal
