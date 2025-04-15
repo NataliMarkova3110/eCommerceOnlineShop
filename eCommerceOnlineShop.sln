@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -10,6 +9,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7580F94A-9679-451C-980B-5ED8ADCD973D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Cart.Tests", "tests\eCommerceOnlineShop.Cart.Tests\eCommerceOnlineShop.Cart.Tests.csproj", "{C2CFEA31-773F-417F-BF0E-763181690FB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Catalog.Core", "src\eCommerceOnlineShop.Catalog.Core\eCommerceOnlineShop.Catalog.Core.csproj", "{A1B2C3D4-E5F6-4A5B-8C7D-9E0F1A2B3C4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Catalog.BLL", "src\eCommerceOnlineShop.Catalog.BLL\eCommerceOnlineShop.Catalog.BLL.csproj", "{B2C3D4E5-F6A7-4B5C-8D9E-0F1A2B3C4D5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Catalog.DAL", "src\eCommerceOnlineShop.Catalog.DAL\eCommerceOnlineShop.Catalog.DAL.csproj", "{C3D4E5F6-A7B8-4C5D-8E9F-0A1B2C3D4E5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Catalog.Tests", "tests\eCommerceOnlineShop.Catalog.Tests\eCommerceOnlineShop.Catalog.Tests.csproj", "{D4E5F6A7-B8C9-4D5E-8F0A-1B2C3D4E5F6G}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,9 +35,29 @@ Global
 		{C2CFEA31-773F-417F-BF0E-763181690FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2CFEA31-773F-417F-BF0E-763181690FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2CFEA31-773F-417F-BF0E-763181690FB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-4A5B-8C7D-9E0F1A2B3C4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-4A5B-8C7D-9E0F1A2B3C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-4A5B-8C7D-9E0F1A2B3C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-4A5B-8C7D-9E0F1A2B3C4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2C3D4E5-F6A7-4B5C-8D9E-0F1A2B3C4D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C3D4E5-F6A7-4B5C-8D9E-0F1A2B3C4D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C3D4E5-F6A7-4B5C-8D9E-0F1A2B3C4D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C3D4E5-F6A7-4B5C-8D9E-0F1A2B3C4D5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D4E5F6-A7B8-4C5D-8E9F-0A1B2C3D4E5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D4E5F6-A7B8-4C5D-8E9F-0A1B2C3D4E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D4E5F6-A7B8-4C5D-8E9F-0A1B2C3D4E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D4E5F6-A7B8-4C5D-8E9F-0A1B2C3D4E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4E5F6A7-B8C9-4D5E-8F0A-1B2C3D4E5F6G}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4E5F6A7-B8C9-4D5E-8F0A-1B2C3D4E5F6G}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4E5F6A7-B8C9-4D5E-8F0A-1B2C3D4E5F6G}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4E5F6A7-B8C9-4D5E-8F0A-1B2C3D4E5F6G}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FFAA6D3A-CB73-4D9A-8C5F-89FC42378587} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
 		{C2CFEA31-773F-417F-BF0E-763181690FB5} = {7580F94A-9679-451C-980B-5ED8ADCD973D}
+		{A1B2C3D4-E5F6-4A5B-8C7D-9E0F1A2B3C4D} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
+		{B2C3D4E5-F6A7-4B5C-8D9E-0F1A2B3C4D5E} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
+		{C3D4E5F6-A7B8-4C5D-8E9F-0A1B2C3D4E5F} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
+		{D4E5F6A7-B8C9-4D5E-8F0A-1B2C3D4E5F6G} = {7580F94A-9679-451C-980B-5ED8ADCD973D}
 	EndGlobalSection
 EndGlobal
