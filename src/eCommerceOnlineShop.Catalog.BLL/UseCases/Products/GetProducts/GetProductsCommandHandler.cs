@@ -4,14 +4,9 @@ using MediatR;
 
 namespace eCommerceOnlineShop.Catalog.BLL.UseCases.Products.GetProducts
 {
-    public class GetProductsCommandHandler : IRequestHandler<GetProductsCommand, IEnumerable<Product>>
+    public class GetProductsCommandHandler(IProductRepository productRepository) : IRequestHandler<GetProductsCommand, IEnumerable<Product>>
     {
-        private readonly IProductRepository _productRepository;
-
-        public GetProductsCommandHandler(IProductRepository productRepository)
-        {
-            _productRepository = productRepository;
-        }
+        private readonly IProductRepository _productRepository = productRepository;
 
         public async Task<IEnumerable<Product>> Handle(GetProductsCommand request, CancellationToken cancellationToken)
         {

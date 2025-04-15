@@ -1,3 +1,4 @@
+using eCommerceOnlineShop.Catalog.BLL.Mapping;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.AddProduct;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.DeleteProduct;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.GetProduct;
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<CatalogDbContext>(options =>
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddProductCommand).Assembly));
 
 builder.Services.AddValidatorsFromAssembly(typeof(AddProductCommand).Assembly);
+
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 var app = builder.Build();
 
