@@ -9,6 +9,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using Xunit;
 
 namespace eCommerceOnlineShop.Catalog.Tests.Integration
@@ -28,10 +29,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddProductCommand).Assembly));
 
-            services.AddScoped<IValidator<AddCategoryCommand>, AddCategoryCommandValidator>();
-            services.AddScoped<IValidator<AddProductCommand>, AddProductCommandValidator>();
-            services.AddScoped<IValidator<UpdateProductCommand>, UpdateProductCommandValidator>();
-            services.AddScoped<IValidator<DeleteProductCommand>, DeleteProductCommandValidator>();
+            services.AddValidatorsFromAssembly(typeof(AddProductCommand).Assembly);
 
             _serviceProvider = services.BuildServiceProvider();
             _context = _serviceProvider.GetRequiredService<CatalogDbContext>();

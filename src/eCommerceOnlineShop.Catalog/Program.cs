@@ -20,11 +20,7 @@ builder.Services.AddDbContext<CatalogDbContext>(options =>
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AddProductCommand).Assembly));
 
-builder.Services.AddScoped<IValidator<AddProductCommand>, AddProductCommandValidator>();
-builder.Services.AddScoped<IValidator<GetProductCommand>, GetProductCommandValidator>();
-builder.Services.AddScoped<IValidator<GetProductsByCategoryCommand>, GetProductsByCategoryCommandValidator>();
-builder.Services.AddScoped<IValidator<UpdateProductCommand>, UpdateProductCommandValidator>();
-builder.Services.AddScoped<IValidator<DeleteProductCommand>, DeleteProductCommandValidator>();
+builder.Services.AddValidatorsFromAssembly(typeof(AddProductCommand).Assembly);
 
 var app = builder.Build();
 
