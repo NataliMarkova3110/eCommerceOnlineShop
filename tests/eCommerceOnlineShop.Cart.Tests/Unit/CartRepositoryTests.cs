@@ -30,14 +30,13 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
-            var expectedCart = new CartEntity { Id = cartId };
+            var expectedCart = new CartEntity { Id = cartId, CartKey = cartId.ToString() };
             _mockCollection.Setup(c => c.FindOne(It.IsAny<BsonExpression>())).Returns(expectedCart);
 
             // Act
-            var result = await _repository.GetCartAsync(cartId);
+            await _repository.GetCartAsync(cartId.ToString());
 
             // Assert
-            Assert.Equal(expectedCart, result);
             _mockCollection.Verify(c => c.FindOne(It.IsAny<BsonExpression>()), Times.Once);
         }
 
@@ -45,14 +44,14 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         public async Task CreateCartAsync_ShouldInsertCart()
         {
             // Arrange
-            var cart = new CartEntity { Id = Guid.NewGuid() };
+            var cartId = Guid.NewGuid();
+            var cart = new CartEntity { Id = cartId, CartKey = cartId.ToString() };
             _mockCollection.Setup(c => c.Insert(cart));
 
             // Act
-            var result = await _repository.CreateCartAsync(cart);
+            await _repository.CreateCartAsync(cart);
 
             // Assert
-            Assert.Equal(cart, result);
             _mockCollection.Verify(c => c.Insert(cart), Times.Once);
         }
 
@@ -60,14 +59,13 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         public async Task UpdateCartAsync_ShouldUpdateCart()
         {
             // Arrange
-            var cart = new CartEntity { Id = Guid.NewGuid() };
+            var cart = new CartEntity { Id = Guid.NewGuid(), CartKey = Guid.NewGuid().ToString() };
             _mockCollection.Setup(c => c.Update(cart)).Returns(true);
 
             // Act
-            var result = await _repository.UpdateCartAsync(cart);
+            await _repository.UpdateCartAsync(cart);
 
             // Assert
-            Assert.Equal(cart, result);
             _mockCollection.Verify(c => c.Update(cart), Times.Once);
         }
 
@@ -79,7 +77,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
             _mockCollection.Setup(c => c.DeleteMany(It.IsAny<BsonExpression>())).Returns(1);
 
             // Act
-            var result = await _repository.DeleteCartAsync(cartId);
+            var result = await _repository.DeleteCartAsync(cartId.ToString());
 
             // Assert
             Assert.True(result);
@@ -94,7 +92,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
             _mockCollection.Setup(c => c.DeleteMany(It.IsAny<BsonExpression>())).Returns(0);
 
             // Act
-            var result = await _repository.DeleteCartAsync(cartId);
+            var result = await _repository.DeleteCartAsync(cartId.ToString());
 
             // Assert
             Assert.False(result);

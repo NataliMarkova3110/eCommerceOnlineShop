@@ -7,21 +7,31 @@ namespace eCommerceOnlineShop.Cart.BLL.Services
     {
         private readonly ICartRepository _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
 
-        public async Task<IEnumerable<CartItem>> GetCartItemsAsync(Guid cartId)
+        public async Task<CartEntity?> GetCartAsync(string cartKey)
         {
-            var cart = await _cartRepository.GetCartAsync(cartId);
+            return await _cartRepository.GetCartAsync(cartKey);
+        }
+
+        public async Task<IEnumerable<CartItem>> GetCartItemsAsync(string cartKey)
+        {
+            var cart = await _cartRepository.GetCartAsync(cartKey);
             return cart?.Items ?? [];
         }
 
-        public async Task<CartItem> AddItemToCartAsync(Guid cartId, CartItem item)
+        public async Task<CartItem> AddItemToCartAsync(string cartKey, CartItem item)
         {
             ArgumentNullException.ThrowIfNull(item);
 
-            var cart = await _cartRepository.GetCartAsync(cartId);
+            var cart = await _cartRepository.GetCartAsync(cartKey);
 
             if (cart == null)
             {
-                cart = new CartEntity { Id = cartId };
+                cart = new CartEntity
+                {
+                    Id = Guid.NewGuid(),
+                    CartKey = cartKey,
+                    Items = []
+                };
                 cart.Items.Add(item);
                 await _cartRepository.CreateCartAsync(cart);
             }
@@ -42,9 +52,9 @@ namespace eCommerceOnlineShop.Cart.BLL.Services
             return item;
         }
 
-        public async Task<bool> RemoveItemFromCartAsync(Guid cartId, int itemId)
+        public async Task<bool> RemoveItemFromCartAsync(string cartKey, int itemId)
         {
-            var cart = await _cartRepository.GetCartAsync(cartId);
+            var cart = await _cartRepository.GetCartAsync(cartKey);
             if (cart == null)
                 return false;
 

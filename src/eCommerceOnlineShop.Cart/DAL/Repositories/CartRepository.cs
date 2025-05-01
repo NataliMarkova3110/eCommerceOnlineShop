@@ -16,27 +16,27 @@ namespace eCommerceOnlineShop.Cart.DAL.Repositories
             _collection = _database.GetCollection<CartEntity>("carts");
         }
 
-        public Task<CartEntity> GetCartAsync(Guid cartId)
+        public Task<CartEntity?> GetCartAsync(string cartKey)
         {
-            var cart = _collection.FindOne(c => c.Id == cartId);
+            var cart = _collection.FindOne(c => c.CartKey == cartKey);
             return Task.FromResult(cart);
         }
 
-        public Task<CartEntity> CreateCartAsync(CartEntity cart)
+        public Task CreateCartAsync(CartEntity cart)
         {
             _collection.Insert(cart);
-            return Task.FromResult(cart);
+            return Task.CompletedTask;
         }
 
-        public Task<CartEntity> UpdateCartAsync(CartEntity cart)
+        public Task UpdateCartAsync(CartEntity cart)
         {
             _collection.Update(cart);
-            return Task.FromResult(cart);
+            return Task.CompletedTask;
         }
 
-        public Task<bool> DeleteCartAsync(Guid cartId)
+        public Task<bool> DeleteCartAsync(string cartKey)
         {
-            var deleted = _collection.DeleteMany(c => c.Id == cartId) > 0;
+            var deleted = _collection.DeleteMany(c => c.CartKey == cartKey) > 0;
             return Task.FromResult(deleted);
         }
 

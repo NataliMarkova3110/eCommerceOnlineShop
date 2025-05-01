@@ -4,8 +4,9 @@ namespace eCommerceOnlineShop.Cart.Core.Interfaces
 {
     public interface ICartService
     {
-        Task<IEnumerable<CartItem>> GetCartItemsAsync(Guid cartId);
-        Task<CartItem> AddItemToCartAsync(Guid cartId, CartItem item);
-        Task<bool> RemoveItemFromCartAsync(Guid cartId, int itemId);
+        Task<CartEntity?> GetCartAsync(string cartKey);
+        Task<IEnumerable<CartItem>> GetCartItemsAsync(string cartKey);
+        Task<CartItem> AddItemToCartAsync(string cartKey, CartItem item);
+        Task<bool> RemoveItemFromCartAsync(string cartKey, int itemId);
     }
 }

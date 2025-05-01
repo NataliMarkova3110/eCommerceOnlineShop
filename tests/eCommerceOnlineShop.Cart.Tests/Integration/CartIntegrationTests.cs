@@ -76,7 +76,8 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
             var item = new CartItem
             {
                 Id = 1,
-                Name = "Test Product",
+                ProductId = 1,
+                ProductName = "Test Product",
                 Price = 10.99m,
                 Quantity = 2
             };
@@ -88,16 +89,16 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
 
             // Assert - Verify item was added through API
             Assert.NotNull(addedItem);
-            Assert.Equal(item.Name, addedItem.Name);
+            Assert.Equal(item.ProductName, addedItem.ProductName);
             Assert.Equal(item.Price, addedItem.Price);
             Assert.Equal(item.Quantity, addedItem.Quantity);
 
             // Verify cart exists in database
-            var cart = await _repository.GetCartAsync(cartId);
+            var cart = await _repository.GetCartAsync(cartId.ToString());
             Assert.NotNull(cart);
             Assert.Single(cart.Items);
             Assert.Equal(item.Id, cart.Items[0].Id);
-            Assert.Equal(item.Name, cart.Items[0].Name);
+            Assert.Equal(item.ProductName, cart.Items[0].ProductName);
             Assert.Equal(item.Price, cart.Items[0].Price);
             Assert.Equal(item.Quantity, cart.Items[0].Quantity);
         }
@@ -110,13 +111,14 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
             var item = new CartItem
             {
                 Id = 1,
-                Name = "Test Product",
+                ProductId = 1,
+                ProductName = "Test Product",
                 Price = 10.99m,
                 Quantity = 2
             };
 
             // Create cart with item directly in database
-            var cart = new CartEntity { Id = cartId };
+            var cart = new CartEntity { Id = cartId, CartKey = cartId.ToString() };
             cart.Items.Add(item);
             await _repository.CreateCartAsync(cart);
 
@@ -129,7 +131,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
             Assert.NotNull(items);
             Assert.Single(items);
             Assert.Equal(item.Id, items[0].Id);
-            Assert.Equal(item.Name, items[0].Name);
+            Assert.Equal(item.ProductName, items[0].ProductName);
             Assert.Equal(item.Price, items[0].Price);
             Assert.Equal(item.Quantity, items[0].Quantity);
         }
@@ -142,13 +144,14 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
             var item = new CartItem
             {
                 Id = 1,
-                Name = "Test Product",
+                ProductId = 1,
+                ProductName = "Test Product",
                 Price = 10.99m,
                 Quantity = 2
             };
 
             // Create cart with item directly in database
-            var cart = new CartEntity { Id = cartId };
+            var cart = new CartEntity { Id = cartId, CartKey = cartId.ToString() };
             cart.Items.Add(item);
             await _repository.CreateCartAsync(cart);
 
@@ -157,7 +160,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
             response.EnsureSuccessStatusCode();
 
             // Assert - Verify item was removed from database
-            var updatedCart = await _repository.GetCartAsync(cartId);
+            var updatedCart = await _repository.GetCartAsync(cartId.ToString());
             Assert.NotNull(updatedCart);
             Assert.Empty(updatedCart.Items);
         }

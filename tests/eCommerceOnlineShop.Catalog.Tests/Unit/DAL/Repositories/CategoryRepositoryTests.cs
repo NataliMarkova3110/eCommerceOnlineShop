@@ -107,11 +107,20 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task DeleteCategoryAsync_DeletesCategory()
+        public async Task DeleteCategoryAsync_DeletesCategoryAndRelatedProducts()
         {
             // Arrange
-            var category = new Category { Name = "To Delete" };
+            var category = new Category { Name = "Test Category" };
+            var product = new Product
+            {
+                Name = "Test Product",
+                Description = "Test Description",
+                Price = 10.99m,
+                Category = category
+            };
+
             await _context.Categories.AddAsync(category);
+            await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
 
             // Act
@@ -119,8 +128,18 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
 
             // Assert
             Assert.True(result);
-            var deletedCategory = await _context.Categories.FindAsync(category.Id);
-            Assert.Null(deletedCategory);
+            Assert.Null(await _context.Categories.FindAsync(category.Id));
+            Assert.Empty(await _context.Products.Where(p => p.CategoryId == category.Id).ToListAsync());
+        }
+
+        [Fact]
+        public async Task DeleteCategoryAsync_ReturnsFalse_WhenCategoryNotFound()
+        {
+            // Act
+            var result = await _repository.DeleteCategoryAsync(999);
+
+            // Assert
+            Assert.False(result);
         }
 
         public void Dispose()
