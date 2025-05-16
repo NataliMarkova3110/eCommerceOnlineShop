@@ -21,14 +21,14 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
-            List<CartItem> expectedItems = [new() { Id = 1, Name = "Test Item", Price = 10.99m, Quantity = 2 }];
-            var cart = new CartEntity { Id = cartId, Items = expectedItems };
+            List<CartItem> expectedItems = [new() { Id = 1, ProductName = "Test Item", Price = 10.99m, Quantity = 2 }];
+            var cart = new CartEntity { Id = cartId, CartKey = cartId.ToString(), Items = expectedItems };
 
-            _mockRepository.Setup(r => r.GetCartAsync(cartId))
+            _mockRepository.Setup(r => r.GetCartAsync(cartId.ToString()))
                 .ReturnsAsync(cart);
 
             // Act
-            var result = await _cartService.GetCartItemsAsync(cartId);
+            var result = await _cartService.GetCartItemsAsync(cartId.ToString());
 
             // Assert
             Assert.Equal(expectedItems, result);
@@ -38,7 +38,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         public async Task GetCartItemsAsync_WhenCartDoesNotExist_ReturnsEmptyList()
         {
             // Arrange
-            var cartId = Guid.NewGuid();
+            var cartId = Guid.NewGuid().ToString();
             _mockRepository.Setup(r => r.GetCartAsync(cartId))
                 .ReturnsAsync((CartEntity)null);
 
@@ -54,16 +54,14 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
-            var newItem = new CartItem { Id = 1, Name = "New Item", Price = 15.99m, Quantity = 1 };
+            var newItem = new CartItem { Id = 1, ProductName = "New Item", Price = 15.99m, Quantity = 1 };
 
-            _mockRepository.Setup(r => r.GetCartAsync(cartId))
+            _mockRepository.Setup(r => r.GetCartAsync(cartId.ToString()))
                 .ReturnsAsync((CartEntity)null);
 
-            _mockRepository.Setup(r => r.CreateCartAsync(It.IsAny<CartEntity>()))
-                .ReturnsAsync((CartEntity cart) => cart);
 
             // Act
-            var result = await _cartService.AddItemToCartAsync(cartId, newItem);
+            var result = await _cartService.AddItemToCartAsync(cartId.ToString(), newItem);
 
             // Assert
             Assert.Equal(newItem, result);
@@ -78,18 +76,16 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
-            var existingItem = new CartItem { Id = 1, Name = "Existing Item", Price = 10.99m, Quantity = 2 };
-            var cart = new CartEntity { Id = cartId, Items = [existingItem] };
-            var newItem = new CartItem { Id = 1, Name = "Existing Item", Price = 10.99m, Quantity = 3 };
+            var cartKey = cartId.ToString();
+            var existingItem = new CartItem { Id = 1, ProductName = "Existing Item", Price = 10.99m, Quantity = 2 };
+            var cart = new CartEntity { Id = cartId, CartKey = cartKey, Items = [existingItem] };
+            var newItem = new CartItem { Id = 1, ProductName = "Existing Item", Price = 10.99m, Quantity = 3 };
 
-            _mockRepository.Setup(r => r.GetCartAsync(cartId))
+            _mockRepository.Setup(r => r.GetCartAsync(cartKey))
                 .ReturnsAsync(cart);
 
-            _mockRepository.Setup(r => r.UpdateCartAsync(It.IsAny<CartEntity>()))
-                .ReturnsAsync((CartEntity c) => c);
-
             // Act
-            var result = await _cartService.AddItemToCartAsync(cartId, newItem);
+            var result = await _cartService.AddItemToCartAsync(cartKey, newItem);
 
             // Assert
             Assert.Equal(newItem, result);
@@ -104,18 +100,16 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
+            var cartKey = cartId.ToString();
             var itemId = 1;
-            var itemToRemove = new CartItem { Id = itemId, Name = "Item to Remove", Price = 10.99m, Quantity = 1 };
-            var cart = new CartEntity { Id = cartId, Items = [itemToRemove] };
+            var itemToRemove = new CartItem { Id = itemId, ProductName = "Item to Remove", Price = 10.99m, Quantity = 1 };
+            var cart = new CartEntity { Id = cartId, CartKey = cartKey, Items = [itemToRemove] };
 
-            _mockRepository.Setup(r => r.GetCartAsync(cartId))
+            _mockRepository.Setup(r => r.GetCartAsync(cartKey))
                 .ReturnsAsync(cart);
 
-            _mockRepository.Setup(r => r.UpdateCartAsync(It.IsAny<CartEntity>()))
-                .ReturnsAsync((CartEntity c) => c);
-
             // Act
-            var result = await _cartService.RemoveItemFromCartAsync(cartId, itemId);
+            var result = await _cartService.RemoveItemFromCartAsync(cartKey, itemId);
 
             // Assert
             Assert.True(result);
@@ -129,14 +123,15 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
+            var cartKey = cartId.ToString();
             var itemId = 2;
-            var cart = new CartEntity { Id = cartId, Items = [] };
+            var cart = new CartEntity { Id = cartId, CartKey = cartKey, Items = [] };
 
-            _mockRepository.Setup(r => r.GetCartAsync(cartId))
+            _mockRepository.Setup(r => r.GetCartAsync(cartKey))
                 .ReturnsAsync(cart);
 
             // Act
-            var result = await _cartService.RemoveItemFromCartAsync(cartId, itemId);
+            var result = await _cartService.RemoveItemFromCartAsync(cartKey, itemId);
 
             // Assert
             Assert.False(result);

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using eCommerceOnlineShop.Cart.Core.Interfaces;
 using eCommerceOnlineShop.Cart.Core.Models;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using Asp.Versioning;
 
 namespace eCommerceOnlineShop.Cart.Controllers
 {

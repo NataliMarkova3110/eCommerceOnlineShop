@@ -22,6 +22,12 @@ namespace eCommerceOnlineShop.Cart.DAL.Repositories
             return Task.FromResult(cart);
         }
 
+        public Task<IEnumerable<CartEntity>> GetAllCartsAsync()
+        {
+            var carts = _collection.FindAll();
+            return Task.FromResult(carts);
+        }
+
         public Task CreateCartAsync(CartEntity cart)
         {
             _collection.Insert(cart);

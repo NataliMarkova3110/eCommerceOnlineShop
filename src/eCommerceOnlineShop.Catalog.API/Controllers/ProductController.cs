@@ -1,6 +1,7 @@
 using eCommerceOnlineShop.Catalog.API.Models;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.AddProduct;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.DeleteProduct;
+using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.GetProduct;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.GetProducts;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.UpdateProduct;
 using eCommerceOnlineShop.Catalog.Core.Models;
@@ -39,11 +40,11 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             var response = new ResourceResponse<IEnumerable<Product>>
             {
                 Data = products,
-                Links = new List<Link>
-                {
+                Links =
+                [
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetProducts), "Product"), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(AddProduct), "Product"), Rel = "create-product", Method = "POST" }
-                }
+                ]
             };
 
             return Ok(response);
@@ -54,7 +55,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ResourceResponse<Product>>> GetProduct(int id)
         {
-            var product = await _mediator.Send(new GetProductQuery { ProductId = id });
+            var product = await _mediator.Send(new GetProductCommand { ProductId = id });
             if (product == null)
             {
                 return NotFound();
@@ -63,12 +64,12 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             var response = new ResourceResponse<Product>
             {
                 Data = product,
-                Links = new List<Link>
-                {
+                Links =
+                [
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id }), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id }), Rel = "update-product", Method = "PUT" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(DeleteProduct), "Product", new { id }), Rel = "delete-product", Method = "DELETE" }
-                }
+                ]
             };
 
             return Ok(response);
@@ -84,7 +85,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             var response = new ResourceResponse<Product>
             {
                 Data = product,
-                Links = new List<Link>
+                Links =
                 {
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id = product.Id }), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id = product.Id }), Rel = "update-product", Method = "PUT" },
@@ -115,7 +116,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             var response = new ResourceResponse<Product>
             {
                 Data = product,
-                Links = new List<Link>
+                Links =
                 {
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id }), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id }), Rel = "update-product", Method = "PUT" },

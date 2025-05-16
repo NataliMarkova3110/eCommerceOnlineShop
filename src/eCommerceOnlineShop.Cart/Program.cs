@@ -1,9 +1,10 @@
 using eCommerceOnlineShop.Cart.Core.Interfaces;
 using eCommerceOnlineShop.Cart.DAL.Repositories;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using eCommerceOnlineShop.MessageBroker.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using eCommerceOnlineShop.Cart.Handlers;
 using System.Reflection;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,9 @@ builder.Services.AddApiVersioning(options =>
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+builder.Services.AddMessageBroker(builder.Configuration);
+builder.Services.AddHostedService<ProductUpdateHandler>();
 
 var app = builder.Build();
 

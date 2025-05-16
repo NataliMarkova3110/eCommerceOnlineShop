@@ -2,6 +2,7 @@ using eCommerceOnlineShop.Catalog.API.Models;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Categories.AddCategory;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Categories.DeleteCategory;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Categories.GetCategories;
+using eCommerceOnlineShop.Catalog.BLL.UseCases.Categories.GetCategory;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Categories.UpdateCategory;
 using eCommerceOnlineShop.Catalog.Core.Models;
 using MediatR;
@@ -11,27 +12,21 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController : ControllerBase
+    public class CategoryController(IMediator mediator, LinkGenerator linkGenerator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly LinkGenerator _linkGenerator;
-
-        public CategoryController(IMediator mediator, LinkGenerator linkGenerator)
-        {
-            _mediator = mediator;
-            _linkGenerator = linkGenerator;
-        }
+        private readonly IMediator _mediator = mediator;
+        private readonly LinkGenerator _linkGenerator = linkGenerator;
 
         [HttpGet]
         [ProducesResponseType(typeof(ResourceResponse<IEnumerable<Category>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<ResourceResponse<IEnumerable<Category>>>> GetCategories()
         {
-            var categories = await _mediator.Send(new GetCategoriesQuery());
+            var categories = await _mediator.Send(new GetCategoriesCommand());
 
             var response = new ResourceResponse<IEnumerable<Category>>
             {
                 Data = categories,
-                Links = new List<Link>
+                Links =
                 {
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetCategories), "Category"), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(AddCategory), "Category"), Rel = "create-category", Method = "POST" }
@@ -46,7 +41,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ResourceResponse<Category>>> GetCategory(int id)
         {
-            var category = await _mediator.Send(new GetCategoryQuery { CategoryId = id });
+            var category = await _mediator.Send(new GetCategoryCommand { CategoryId = id });
             if (category == null)
             {
                 return NotFound();
@@ -55,7 +50,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             var response = new ResourceResponse<Category>
             {
                 Data = category,
-                Links = new List<Link>
+                Links =
                 {
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetCategory), "Category", new { id }), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateCategory), "Category", new { id }), Rel = "update-category", Method = "PUT" },
@@ -76,7 +71,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             var response = new ResourceResponse<Category>
             {
                 Data = category,
-                Links = new List<Link>
+                Links =
                 {
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetCategory), "Category", new { id = category.Id }), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateCategory), "Category", new { id = category.Id }), Rel = "update-category", Method = "PUT" },
@@ -107,7 +102,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             var response = new ResourceResponse<Category>
             {
                 Data = category,
-                Links = new List<Link>
+                Links =
                 {
                     new() { Href = _linkGenerator.GetPathByAction(nameof(GetCategory), "Category", new { id }), Rel = "self", Method = "GET" },
                     new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateCategory), "Category", new { id }), Rel = "update-category", Method = "PUT" },

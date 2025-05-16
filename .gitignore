@@ -52,3 +52,9 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Ignore environment-specific configuration files
+appsettings.Development.json
+
+#VS
+.vs/

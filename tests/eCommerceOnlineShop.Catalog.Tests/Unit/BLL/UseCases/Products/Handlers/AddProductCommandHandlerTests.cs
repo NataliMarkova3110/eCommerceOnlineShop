@@ -1,5 +1,6 @@
+using AutoMapper;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.AddProduct;
-using eCommerceOnlineShop.Catalog.Core.Interfaces;
+using eCommerceOnlineShop.Catalog.Core.Interfaces.Repositories;
 using eCommerceOnlineShop.Catalog.Core.Models;
 using Moq;
 using Xunit;
@@ -8,13 +9,17 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Handlers
 {
     public class AddProductCommandHandlerTests
     {
-        private readonly Mock<IProductRepository> _mockRepository;
+        private readonly Mock<IProductRepository> _mockProductRepository;
+        private readonly Mock<ICategoryRepository> _mockCategoryRepository;
+        private readonly Mock<IMapper> _mockMapper;
         private readonly AddProductCommandHandler _handler;
 
         public AddProductCommandHandlerTests()
         {
-            _mockRepository = new Mock<IProductRepository>();
-            _handler = new AddProductCommandHandler(_mockRepository.Object);
+            _mockProductRepository = new Mock<IProductRepository>();
+            _mockCategoryRepository = new Mock<ICategoryRepository>();
+            _mockMapper = new Mock<IMapper>();
+            _handler = new AddProductCommandHandler(_mockProductRepository.Object, _mockCategoryRepository.Object, _mockMapper.Object);
         }
 
         [Fact]
@@ -38,7 +43,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Handlers
                 CategoryId = command.CategoryId
             };
 
-            _mockRepository.Setup(r => r.CreateProductAsync(It.IsAny<Product>()))
+            _mockProductRepository.Setup(r => r.CreateProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(expectedProduct);
 
             // Act
@@ -52,7 +57,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Handlers
             Assert.Equal(expectedProduct.Price, result.Price);
             Assert.Equal(expectedProduct.CategoryId, result.CategoryId);
 
-            _mockRepository.Verify(r => r.CreateProductAsync(It.IsAny<Product>()), Times.Once);
+            _mockProductRepository.Verify(r => r.CreateProductAsync(It.IsAny<Product>()), Times.Once);
         }
     }
 }
