@@ -10,6 +10,6 @@ namespace eCommerceOnlineShop.Catalog.API.Models
     public class ResourceResponse<T>
     {
         public T Data { get; set; } = default!;
-        public List<Link> Links { get; set; } = new();
+        public List<Link> Links { get; set; } = [];
     }
 }

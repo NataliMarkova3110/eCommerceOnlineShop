@@ -10,17 +10,13 @@ namespace eCommerceOnlineShop.Catalog.BLL.UseCases.Products.AddProduct
         ICategoryRepository categoryRepository,
         IMapper mapper) : IRequestHandler<AddProductCommand, Product>
     {
-        private readonly IProductRepository _productRepository = productRepository;
-        private readonly ICategoryRepository _categoryRepository = categoryRepository;
-        private readonly IMapper _mapper = mapper;
-
         public async Task<Product> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-            _ = await _categoryRepository.GetCategoryAsync(request.CategoryId)
+            _ = await categoryRepository.GetCategoryAsync(request.CategoryId)
                 ?? throw new ArgumentException("Category does not exist", nameof(request));
 
-            var product = _mapper.Map<Product>(request);
-            return await _productRepository.CreateProductAsync(product);
+            var product = mapper.Map<Product>(request);
+            return await productRepository.CreateProductAsync(product);
         }
     }
 }

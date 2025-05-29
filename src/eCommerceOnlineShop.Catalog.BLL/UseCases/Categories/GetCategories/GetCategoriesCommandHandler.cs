@@ -6,11 +6,9 @@ namespace eCommerceOnlineShop.Catalog.BLL.UseCases.Categories.GetCategories
 {
     public class GetCategoriesCommandHandler(ICategoryRepository categoryRepository) : IRequestHandler<GetCategoriesCommand, IEnumerable<Category>>
     {
-        private readonly ICategoryRepository _categoryRepository = categoryRepository;
-
         public async Task<IEnumerable<Category>> Handle(GetCategoriesCommand request, CancellationToken cancellationToken)
         {
-            return await _categoryRepository.GetCategoriesAsync();
+            return await categoryRepository.GetCategoriesAsync();
         }
     }
 }

@@ -31,7 +31,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Handlers
                 Name = "Test Product",
                 Description = "Test Description",
                 Price = 10.99m,
-                CategoryId = 1
+                CategoryId = 1,
+                Amount = 100
             };
 
             var expectedProduct = new Product
@@ -40,7 +41,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Handlers
                 Name = command.Name,
                 Description = command.Description,
                 Price = command.Price,
-                CategoryId = command.CategoryId
+                CategoryId = command.CategoryId,
+                Amount = command.Amount
             };
 
             _mockProductRepository.Setup(r => r.CreateProductAsync(It.IsAny<Product>()))

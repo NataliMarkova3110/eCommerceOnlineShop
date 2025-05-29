@@ -52,7 +52,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _controller.GetCategories();
+            var result = await _controller.GetCategoriesAsync();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -71,7 +71,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _controller.GetCategory(category.Id);
+            var result = await _controller.GetCategoryAsync(category.Id);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -93,7 +93,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
             };
 
             // Act
-            var result = await _controller.AddCategory(command);
+            var result = await _controller.AddCategoryAsync(command);
 
             // Assert
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
@@ -120,7 +120,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
             };
 
             // Act
-            var result = await _controller.UpdateCategory(category.Id, command);
+            var result = await _controller.UpdateCategoryAsync(category.Id, command);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -135,7 +135,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
         public async Task DeleteCategory_ReturnsNotFound_WhenCategoryDoesNotExist()
         {
             // Act
-            var result = await _controller.DeleteCategory(999);
+            var result = await _controller.DeleteCategoryAsync(999);
 
             // Assert
             Assert.IsType<NotFoundResult>(result.ExecuteResultAsync);
@@ -151,7 +151,9 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
                 Name = "Test Product",
                 Description = "Test Description",
                 Price = 10.99m,
-                Category = category
+                CategoryId = category.Id,
+                Category = category,
+                Amount = 100
             };
 
             await _context.Categories.AddAsync(category);
@@ -159,7 +161,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _controller.DeleteCategory(category.Id);
+            var result = await _controller.DeleteCategoryAsync(category.Id);
 
             // Assert
             Assert.IsType<NoContentResult>(result.ExecuteResultAsync);

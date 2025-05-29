@@ -16,7 +16,6 @@ namespace eCommerceOnlineShop.Cart.Controllers
     [Authorize(Policy = "RequireAnyRole")]
     public class CartController(ICartService cartService) : ControllerBase
     {
-        private readonly ICartService _cartService = cartService;
 
         /// <summary>
         /// Retrieves a cart by its key (Version 1.0)
@@ -29,9 +28,9 @@ namespace eCommerceOnlineShop.Cart.Controllers
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(CartEntity), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CartEntity>> GetCartV1(string cartKey)
+        public async Task<ActionResult<CartEntity>> GetCartV1Async(string cartKey)
         {
-            var cart = await _cartService.GetCartAsync(cartKey);
+            var cart = await cartService.GetCartAsync(cartKey);
             if (cart == null)
             {
                 return NotFound();
@@ -51,9 +50,9 @@ namespace eCommerceOnlineShop.Cart.Controllers
         [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(IEnumerable<CartItem>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartV2(string cartKey)
+        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartV2Async(string cartKey)
         {
-            var items = await _cartService.GetCartItemsAsync(cartKey);
+            var items = await cartService.GetCartItemsAsync(cartKey);
             if (items == null)
             {
                 return NotFound();
@@ -75,7 +74,7 @@ namespace eCommerceOnlineShop.Cart.Controllers
         [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(CartItem), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CartItem>> AddItemToCart(string cartKey, [FromBody] CartItem item)
+        public async Task<ActionResult<CartItem>> AddItemToCartAsync(string cartKey, [FromBody] CartItem item)
         {
             if (item == null)
             {
@@ -87,7 +86,7 @@ namespace eCommerceOnlineShop.Cart.Controllers
                 return BadRequest("Cart key cannot be empty");
             }
 
-            var addedItem = await _cartService.AddItemToCartAsync(cartKey, item);
+            var addedItem = await cartService.AddItemToCartAsync(cartKey, item);
             return Ok(addedItem);
         }
 
@@ -104,9 +103,9 @@ namespace eCommerceOnlineShop.Cart.Controllers
         [MapToApiVersion("2.0")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> RemoveItemFromCart(string cartKey, int itemId)
+        public async Task<ActionResult> RemoveItemFromCartAsync(string cartKey, int itemId)
         {
-            var result = await _cartService.RemoveItemFromCartAsync(cartKey, itemId);
+            var result = await cartService.RemoveItemFromCartAsync(cartKey, itemId);
             if (!result)
                 return NotFound();
 

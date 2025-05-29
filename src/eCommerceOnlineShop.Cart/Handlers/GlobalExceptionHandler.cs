@@ -6,14 +6,12 @@ namespace eCommerceOnlineShop.Cart.Handlers
 {
     public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
     {
-        private readonly ILogger<GlobalExceptionHandler> _logger = logger;
-
         public async ValueTask<bool> TryHandleAsync(
             HttpContext httpContext,
             Exception exception,
             CancellationToken cancellationToken)
         {
-            _logger.LogError(exception, "An unhandled exception occurred");
+            logger.LogError(exception, "An unhandled exception occurred");
 
             var statusCode = exception switch
             {

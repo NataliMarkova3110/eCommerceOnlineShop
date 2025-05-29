@@ -7,7 +7,7 @@ namespace eCommerceOnlineShop.IdentityServer.Services
         UserManager<ApplicationUser> userManager)
     {
 
-        public async Task AssignRoleToUser(string userId, string roleName)
+        public async Task AssignRoleToUserAsync(string userId, string roleName)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user != null)
@@ -16,10 +16,13 @@ namespace eCommerceOnlineShop.IdentityServer.Services
             }
         }
 
-        public async Task<bool> HasPermission(string userId, string permission)
+        public async Task<bool> HasPermissionAsync(string userId, string permission)
         {
             var user = await userManager.FindByIdAsync(userId);
-            if (user == null) return false;
+            if (user == null)
+            {
+                return false;
+            }
 
             var roles = await userManager.GetRolesAsync(user);
 

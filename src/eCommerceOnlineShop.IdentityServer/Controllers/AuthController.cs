@@ -15,7 +15,7 @@ namespace eCommerceOnlineShop.IdentityServer.Controllers
     {
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel model)
         {
             var user = new ApplicationUser
             {
@@ -28,7 +28,7 @@ namespace eCommerceOnlineShop.IdentityServer.Controllers
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await roleService.AssignRoleToUser(user.Id, "Customer");
+                await roleService.AssignRoleToUserAsync(user.Id, "Customer");
                 return Ok(new { message = "User registered successfully" });
             }
 
@@ -36,7 +36,7 @@ namespace eCommerceOnlineShop.IdentityServer.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
@@ -47,8 +47,8 @@ namespace eCommerceOnlineShop.IdentityServer.Controllers
             var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, false);
             if (result.Succeeded)
             {
-                var token = await tokenService.GenerateJwtToken(user);
-                var refreshToken = await tokenService.GenerateRefreshToken(user);
+                var token = await tokenService.GenerateJwtTokenAsync(user);
+                var refreshToken = await tokenService.GenerateRefreshTokenAsync(user);
 
                 return Ok(new
                 {
@@ -61,7 +61,7 @@ namespace eCommerceOnlineShop.IdentityServer.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenModel model)
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenModel model)
         {
             var user = await userManager.FindByIdAsync(model.UserId);
             if (user == null)
@@ -69,13 +69,13 @@ namespace eCommerceOnlineShop.IdentityServer.Controllers
                 return Unauthorized(new { message = "Invalid user" });
             }
 
-            if (!await tokenService.ValidateRefreshToken(user, model.RefreshToken))
+            if (!await tokenService.ValidateRefreshTokenAsync(user, model.RefreshToken))
             {
                 return Unauthorized(new { message = "Invalid refresh token" });
             }
 
-            var token = await tokenService.GenerateJwtToken(user);
-            var newRefreshToken = await tokenService.GenerateRefreshToken(user);
+            var token = await tokenService.GenerateJwtTokenAsync(user);
+            var newRefreshToken = await tokenService.GenerateRefreshTokenAsync(user);
 
             return Ok(new
             {

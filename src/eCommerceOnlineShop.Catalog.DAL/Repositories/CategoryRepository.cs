@@ -7,11 +7,9 @@ namespace eCommerceOnlineShop.Catalog.DAL.Repositories
 {
     public class CategoryRepository(CatalogDbContext context) : ICategoryRepository
     {
-        private readonly CatalogDbContext _context = context;
-
         public async Task<Category?> GetCategoryAsync(int id)
         {
-            return await _context.Categories
+            return await context.Categories
                 .Include(c => c.ParentCategory)
                 .Include(c => c.SubCategories)
                 .FirstOrDefaultAsync(c => c.Id == id);
@@ -19,7 +17,7 @@ namespace eCommerceOnlineShop.Catalog.DAL.Repositories
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            return await _context.Categories
+            return await context.Categories
                 .Include(c => c.ParentCategory)
                 .Include(c => c.SubCategories)
                 .ToListAsync();
@@ -27,25 +25,25 @@ namespace eCommerceOnlineShop.Catalog.DAL.Repositories
 
         public async Task<Category> CreateCategoryAsync(Category category)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            context.Categories.Add(category);
+            await context.SaveChangesAsync();
             return category;
         }
 
         public async Task<Category> UpdateCategoryAsync(Category category)
         {
-            _context.Entry(category).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            context.Entry(category).State = EntityState.Modified;
+            await context.SaveChangesAsync();
             return category;
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await context.Categories.FindAsync(id);
             if (category != null)
             {
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                context.Categories.Remove(category);
+                await context.SaveChangesAsync();
                 return true;
             }
             return false;

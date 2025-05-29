@@ -111,10 +111,3 @@ This project follows Microsoft's C# coding conventions and best practices. The s
 2. Install required tools and extensions
 3. Open the solution in your IDE
 4. The `.editorconfig` file will automatically enforce coding standards
-
-### Additional Resources
-
-- [Microsoft C# Coding Conventions](https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-- [EditorConfig](https://editorconfig.org/)
-- [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)
-- [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)

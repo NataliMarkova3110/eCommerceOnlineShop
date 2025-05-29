@@ -116,7 +116,9 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
                 Name = "Test Product",
                 Description = "Test Description",
                 Price = 10.99m,
-                Category = category
+                Category = category,
+                Amount = 100,
+                CategoryId = category.Id
             };
 
             await _context.Categories.AddAsync(category);

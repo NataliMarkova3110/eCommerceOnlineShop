@@ -59,7 +59,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration
                     Name = $"Product {i}",
                     Description = $"Description {i}",
                     Price = 10.99m * i,
-                    CategoryId = category.Id
+                    CategoryId = category.Id,
+                    Amount = 100 + i
                 };
 
                 var product = await _mediator.Send(addProductCommand);
@@ -87,7 +88,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration
                 Name = "Updated Product",
                 Description = "Updated Description",
                 Price = 99.99m,
-                CategoryId = category.Id
+                CategoryId = category.Id,
+                Amount = 100
             };
 
             var updatedProduct = await _mediator.Send(updateProductCommand);

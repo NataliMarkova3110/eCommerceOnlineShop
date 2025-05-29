@@ -19,7 +19,7 @@ namespace eCommerceOnlineShop.Cart.DAL.Repositories
         public Task<CartEntity?> GetCartAsync(string cartKey)
         {
             var cart = _collection.FindOne(c => c.CartKey == cartKey);
-            return Task.FromResult(cart);
+            return Task.FromResult<CartEntity?>(cart);
         }
 
         public Task<IEnumerable<CartEntity>> GetAllCartsAsync()

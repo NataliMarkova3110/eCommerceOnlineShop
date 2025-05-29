@@ -11,7 +11,7 @@ namespace eCommerceOnlineShop.IdentityServer.Services
         UserManager<ApplicationUser> userManager,
         IConfiguration configuration)
     {
-        public async Task<string> GenerateJwtToken(ApplicationUser user)
+        public async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
         {
             var roles = await userManager.GetRolesAsync(user);
             var claims = new List<Claim>
@@ -41,14 +41,14 @@ namespace eCommerceOnlineShop.IdentityServer.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<string> GenerateRefreshToken(ApplicationUser user)
+        public async Task<string> GenerateRefreshTokenAsync(ApplicationUser user)
         {
             var refreshToken = Guid.NewGuid().ToString();
             await userManager.SetAuthenticationTokenAsync(user, "RefreshToken", "RefreshToken", refreshToken);
             return refreshToken;
         }
 
-        public async Task<bool> ValidateRefreshToken(ApplicationUser user, string refreshToken)
+        public async Task<bool> ValidateRefreshTokenAsync(ApplicationUser user, string refreshToken)
         {
             var storedToken = await userManager.GetAuthenticationTokenAsync(user, "RefreshToken", "RefreshToken");
             return storedToken == refreshToken;

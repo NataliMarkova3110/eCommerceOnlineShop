@@ -12,23 +12,19 @@ namespace eCommerceOnlineShop.Cart.Handlers
         ILogger<ProductUpdateHandler> logger,
         IOptions<ServiceBusSettings> settings) : BackgroundService
     {
-        private readonly IMessageListener _messageListener = messageListener;
-        private readonly ICartRepository _cartRepository = cartRepository;
-        private readonly ILogger<ProductUpdateHandler> _logger = logger;
-        private readonly ServiceBusSettings _settings = settings.Value;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await _messageListener.StartListeningAsync<ProductUpdateMessage>(
-                _settings.TopicName,
-                _settings.SubscriptionName,
+            await messageListener.StartListeningAsync<ProductUpdateMessage>(
+                settings.Value.TopicName,
+                settings.Value.SubscriptionName,
                 async message =>
                 {
                     try
                     {
-                        _logger.LogInformation($"Received product update: {message.ProductId}");
+                        logger.LogInformation("Received product update: {ProductId}", message.ProductId);
 
-                        var carts = await _cartRepository.GetAllCartsAsync();
+                        var carts = await cartRepository.GetAllCartsAsync();
                         foreach (var cart in carts)
                         {
                             var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == message.ProductId);
@@ -42,13 +38,13 @@ namespace eCommerceOnlineShop.Cart.Handlers
                                     cart.Items.Remove(cartItem);
                                 }
 
-                                await _cartRepository.UpdateCartAsync(cart);
+                                await cartRepository.UpdateCartAsync(cart);
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, $"Error processing product update for product {message.ProductId}");
+                        logger.LogError(ex, $"Error processing product update for product {message.ProductId}");
                         throw;
                     }
                 });
@@ -56,7 +52,7 @@ namespace eCommerceOnlineShop.Cart.Handlers
 
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
-            await _messageListener.StopListeningAsync();
+            await messageListener.StopListeningAsync();
             await base.StopAsync(cancellationToken);
         }
     }

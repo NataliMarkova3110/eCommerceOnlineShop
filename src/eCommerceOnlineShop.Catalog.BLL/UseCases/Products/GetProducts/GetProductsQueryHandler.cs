@@ -6,16 +6,11 @@ namespace eCommerceOnlineShop.Catalog.BLL.UseCases.Products.GetProducts
 {
     public class GetProductsQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductsQuery, IEnumerable<Product>>
     {
-        private readonly IProductRepository _productRepository = productRepository;
-
         public async Task<IEnumerable<Product>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
-            if (request.CategoryId.HasValue)
-            {
-                return await _productRepository.GetProductsByCategoryAsync(request.CategoryId.Value);
-            }
-
-            return await _productRepository.GetProductsAsync();
+            return request.CategoryId.HasValue
+                ? await productRepository.GetProductsByCategoryAsync(request.CategoryId.Value)
+                : await productRepository.GetProductsAsync();
         }
     }
 }

@@ -5,32 +5,25 @@ using eCommerceOnlineShop.Catalog.DAL.Data;
 
 namespace eCommerceOnlineShop.Catalog.DAL.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository(CatalogDbContext context) : IProductRepository
     {
-        private readonly CatalogDbContext _context;
-
-        public ProductRepository(CatalogDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Product?> GetProductAsync(int id)
         {
-            return await _context.Products
+            return await context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            return await _context.Products
+            return await context.Products
                 .Include(p => p.Category)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {
-            return await _context.Products
+            return await context.Products
                 .Include(p => p.Category)
                 .Where(p => p.CategoryId == categoryId)
                 .ToListAsync();
@@ -38,25 +31,25 @@ namespace eCommerceOnlineShop.Catalog.DAL.Repositories
 
         public async Task<Product> CreateProductAsync(Product product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            context.Products.Add(product);
+            await context.SaveChangesAsync();
             return product;
         }
 
         public async Task<Product> UpdateProductAsync(Product product)
         {
-            _context.Entry(product).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            context.Entry(product).State = EntityState.Modified;
+            await context.SaveChangesAsync();
             return product;
         }
 
         public async Task<bool> DeleteProductAsync(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await context.Products.FindAsync(id);
             if (product != null)
             {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+                context.Products.Remove(product);
+                await context.SaveChangesAsync();
                 return true;
             }
             return false;

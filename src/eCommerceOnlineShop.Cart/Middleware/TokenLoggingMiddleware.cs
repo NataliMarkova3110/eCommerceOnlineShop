@@ -5,21 +5,16 @@ namespace eCommerceOnlineShop.Cart.Middleware
 {
     public class TokenLoggingMiddleware(RequestDelegate next, ILogger<TokenLoggingMiddleware> logger)
     {
-        private readonly RequestDelegate _next = next;
-        private readonly ILogger<TokenLoggingMiddleware> _logger = logger;
-
         public async Task InvokeAsync(HttpContext context)
         {
-            var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var token = context.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
 
             if (!string.IsNullOrEmpty(token))
             {
                 try
                 {
                     var handler = new JwtSecurityTokenHandler();
-                    var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-
-                    if (jsonToken != null)
+                    if (handler.ReadToken(token) is JwtSecurityToken jsonToken)
                     {
                         var tokenDetails = new
                         {
@@ -30,7 +25,7 @@ namespace eCommerceOnlineShop.Cart.Middleware
                             ExpiresAt = jsonToken.ValidTo
                         };
 
-                        _logger.LogInformation(
+                        logger.LogInformation(
                             "Token Details - UserId: {UserId}, Email: {Email}, Roles: {Roles}, IssuedAt: {IssuedAt}, ExpiresAt: {ExpiresAt}",
                             tokenDetails.UserId,
                             tokenDetails.Email,
@@ -41,11 +36,11 @@ namespace eCommerceOnlineShop.Cart.Middleware
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error processing token in middleware");
+                    logger.LogError(ex, "Error processing token in middleware");
                 }
             }
 
-            await _next(context);
+            await next(context);
         }
     }
 }

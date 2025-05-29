@@ -17,7 +17,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
     {
         [HttpGet]
         [ProducesResponseType(typeof(ResourceResponse<IEnumerable<Category>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<ResourceResponse<IEnumerable<Category>>>> GetCategories()
+        public async Task<ActionResult<ResourceResponse<IEnumerable<Category>>>> GetCategoriesAsync()
         {
             var categories = await mediator.Send(new GetCategoriesCommand());
 
@@ -26,8 +26,8 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 Data = categories,
                 Links =
                 {
-                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategories), "Category"), Rel = "self", Method = "GET" },
-                    new() { Href = linkGenerator.GetPathByAction(nameof(AddCategory), "Category"), Rel = "create-category", Method = "POST" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategoriesAsync), "Category") ?? "/api/Category", Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(AddCategoryAsync), "Category") ?? "/api/Category", Rel = "create-category", Method = "POST" }
                 }
             };
 
@@ -37,7 +37,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResourceResponse<Category>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResourceResponse<Category>>> GetCategory(int id)
+        public async Task<ActionResult<ResourceResponse<Category>>> GetCategoryAsync(int id)
         {
             var category = await mediator.Send(new GetCategoryCommand { CategoryId = id });
             if (category == null)
@@ -50,9 +50,9 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 Data = category,
                 Links =
                 {
-                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategory), "Category", new { id }), Rel = "self", Method = "GET" },
-                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateCategory), "Category", new { id }), Rel = "update-category", Method = "PUT" },
-                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteCategory), "Category", new { id }), Rel = "delete-category", Method = "DELETE" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategoryAsync), "Category", new { id }) ?? $"/api/Category/{id}", Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateCategoryAsync), "Category", new { id }) ?? $"/api/Category/{id}", Rel = "update-category", Method = "PUT" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteCategoryAsync), "Category", new { id }) ?? $"/api/Category/{id}", Rel = "delete-category", Method = "DELETE" }
                 }
             };
 
@@ -63,7 +63,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [ProducesResponseType(typeof(ResourceResponse<Category>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Manager")]
-        public async Task<ActionResult<ResourceResponse<Category>>> AddCategory(AddCategoryCommand command)
+        public async Task<ActionResult<ResourceResponse<Category>>> AddCategoryAsync(AddCategoryCommand command)
         {
             var category = await mediator.Send(command);
 
@@ -72,13 +72,13 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 Data = category,
                 Links =
                 {
-                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategory), "Category", new { id = category.Id }), Rel = "self", Method = "GET" },
-                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateCategory), "Category", new { id = category.Id }), Rel = "update-category", Method = "PUT" },
-                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteCategory), "Category", new { id = category.Id }), Rel = "delete-category", Method = "DELETE" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategoryAsync), "Category", new { id = category.Id }) ?? $"/api/Category/{category.Id}", Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateCategoryAsync), "Category", new { id = category.Id }) ?? $"/api/Category/{category.Id}", Rel = "update-category", Method = "PUT" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteCategoryAsync), "Category", new { id = category.Id }) ?? $"/api/Category/{category.Id}", Rel = "delete-category", Method = "DELETE" }
                 }
             };
 
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, response);
+            return CreatedAtAction(nameof(GetCategoryAsync), new { id = category.Id }, response);
         }
 
         [HttpPut("{id}")]
@@ -86,7 +86,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Roles = "Manager")]
-        public async Task<ActionResult<ResourceResponse<Category>>> UpdateCategory(int id, UpdateCategoryCommand command)
+        public async Task<ActionResult<ResourceResponse<Category>>> UpdateCategoryAsync(int id, UpdateCategoryCommand command)
         {
             if (id != command.Id)
             {
@@ -104,9 +104,9 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 Data = category,
                 Links =
                 {
-                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategory), "Category", new { id }), Rel = "self", Method = "GET" },
-                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateCategory), "Category", new { id }), Rel = "update-category", Method = "PUT" },
-                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteCategory), "Category", new { id }), Rel = "delete-category", Method = "DELETE" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetCategoryAsync), "Category", new { id }) ?? $"/api/Category/{id}", Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateCategoryAsync), "Category", new { id }) ?? $"/api/Category/{id}", Rel = "update-category", Method = "PUT" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteCategoryAsync), "Category", new { id }) ?? $"/api/Category/{id}", Rel = "delete-category", Method = "DELETE" }
                 }
             };
 
@@ -117,15 +117,10 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategoryAsync(int id)
         {
             var result = await mediator.Send(new DeleteCategoryCommand { CategoryId = id });
-            if (!result)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return !result ? NotFound() : NoContent();
         }
     }
 }

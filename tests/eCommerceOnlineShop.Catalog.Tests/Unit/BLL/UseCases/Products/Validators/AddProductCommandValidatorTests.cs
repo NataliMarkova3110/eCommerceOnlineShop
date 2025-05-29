@@ -22,7 +22,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
                 Name = "Test Product",
                 Description = "Test Description",
                 Price = 10.99m,
-                CategoryId = 1
+                CategoryId = 1,
+                Amount = 100
             };
 
             // Act
@@ -43,7 +44,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
                 Name = name,
                 Description = "Test Description",
                 Price = 10.99m,
-                CategoryId = 1
+                CategoryId = 1,
+                Amount = 100
             };
 
             // Act
@@ -64,7 +66,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
                 Name = "Test Product",
                 Description = "Test Description",
                 Price = price,
-                CategoryId = 1
+                CategoryId = 1,
+                Amount = 100
             };
 
             // Act
@@ -85,7 +88,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
                 Name = "Test Product",
                 Description = "Test Description",
                 Price = 10.99m,
-                CategoryId = categoryId
+                CategoryId = categoryId,
+                Amount = 100
             };
 
             // Act

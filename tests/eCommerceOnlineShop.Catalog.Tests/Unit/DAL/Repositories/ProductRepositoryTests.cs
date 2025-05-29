@@ -31,7 +31,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
                 Name = "Test Product",
                 Description = "Test Description",
                 Price = 10.99m,
-                CategoryId = category.Id
+                CategoryId = category.Id,
+                Amount = 100
             };
             await _context.Categories.AddAsync(category);
             await _context.Products.AddAsync(product);
@@ -65,8 +66,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
             var category = new Category { Name = "Test Category" };
             var products = new List<Product>
             {
-                new() { Name = "Product 1", CategoryId = category.Id, Price = 10.99m },
-                new() { Name = "Product 2", CategoryId = category.Id, Price = 20.99m }
+                new() { Name = "Product 1", CategoryId = category.Id, Price = 10.99m, Amount = 100 },
+                new() { Name = "Product 2", CategoryId = category.Id, Price = 20.99m, Amount = 100 }
             };
             await _context.Categories.AddAsync(category);
             await _context.Products.AddRangeAsync(products);
@@ -89,9 +90,9 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
             var category2 = new Category { Name = "Category 2" };
             var products = new List<Product>
             {
-                new() { Name = "Product 1", CategoryId = category1.Id, Price = 10.99m },
-                new() { Name = "Product 2", CategoryId = category1.Id, Price = 20.99m },
-                new() { Name = "Product 3", CategoryId = category2.Id, Price = 30.99m }
+                new() { Name = "Product 1", CategoryId = category1.Id, Price = 10.99m, Amount = 100 },
+                new() { Name = "Product 2", CategoryId = category1.Id, Price = 20.99m, Amount = 100 },
+                new() { Name = "Product 3", CategoryId = category2.Id, Price = 30.99m, Amount = 100 }
             };
             await _context.Categories.AddRangeAsync(category1, category2);
             await _context.Products.AddRangeAsync(products);
@@ -120,7 +121,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
                 Name = "New Product",
                 Description = "New Description",
                 Price = 19.99m,
-                CategoryId = category.Id
+                CategoryId = category.Id,
+                Amount = 50
             };
 
             // Act
@@ -147,7 +149,8 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
                 Name = "Original Product",
                 Description = "Original Description",
                 Price = 10.99m,
-                CategoryId = category.Id
+                CategoryId = category.Id,
+                Amount = 100
             };
             await _context.Categories.AddAsync(category);
             await _context.Products.AddAsync(product);
@@ -175,7 +178,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
-            var product = new Product { Name = "To Delete", CategoryId = category.Id, Price = 10.99m };
+            var product = new Product { Name = "To Delete", CategoryId = category.Id, Price = 10.99m, Amount = 100 };
             await _context.Categories.AddAsync(category);
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();

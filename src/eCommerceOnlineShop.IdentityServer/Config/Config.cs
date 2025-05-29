@@ -32,7 +32,7 @@ namespace eCommerceOnlineShop.IdentityServer.Config
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedScopes = { "openid", "profile", "roles", "catalog", "cart" },
-                    AccessTokenLifetime = 3600, 
+                    AccessTokenLifetime = 3600,
                     RefreshTokenUsage = TokenUsage.ReUse,
                     RefreshTokenExpiration = TokenExpiration.Sliding,
                     SlidingRefreshTokenLifetime = 1296000,
