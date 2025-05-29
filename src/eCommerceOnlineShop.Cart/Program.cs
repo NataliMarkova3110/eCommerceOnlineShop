@@ -1,30 +1,37 @@
 using eCommerceOnlineShop.Cart.Core.Interfaces;
 using eCommerceOnlineShop.Cart.DAL.Repositories;
 using eCommerceOnlineShop.MessageBroker.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using eCommerceOnlineShop.Cart.Handlers;
 using System.Reflection;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using eCommerceOnlineShop.Cart.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["Identity:Authority"];
-        options.Audience = builder.Configuration["Identity:Audience"];
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = true,
             ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"], // appsettings.Development.json, which are not commited
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("RequireAnyRole", policy =>
+        policy.RequireRole("Manager", "Customer"));
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -53,17 +60,16 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Cart API V1");
-    });
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
-app.UseExceptionHandler();
+
+app.UseMiddleware<TokenLoggingMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

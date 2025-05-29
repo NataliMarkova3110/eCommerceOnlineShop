@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using eCommerceOnlineShop.Cart.Core.Interfaces;
 using eCommerceOnlineShop.Cart.Core.Models;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eCommerceOnlineShop.Cart.Controllers
 {
@@ -12,6 +13,7 @@ namespace eCommerceOnlineShop.Cart.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
     [ApiVersion("2.0")]
+    [Authorize(Policy = "RequireAnyRole")]
     public class CartController(ICartService cartService) : ControllerBase
     {
         private readonly ICartService _cartService = cartService;
