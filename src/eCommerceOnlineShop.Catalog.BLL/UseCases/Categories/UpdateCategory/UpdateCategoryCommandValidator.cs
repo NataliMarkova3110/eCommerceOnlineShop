@@ -24,8 +24,16 @@ namespace eCommerceOnlineShop.Catalog.BLL.UseCases.Categories.UpdateCategory
             RuleFor(x => x.ParentCategoryId)
                 .MustAsync(async (command, parentId, cancellation) =>
                 {
-                    if (!parentId.HasValue) return true;
-                    if (parentId.Value == command.Id) return false;
+                    if (!parentId.HasValue)
+                    {
+                        return true;
+                    }
+
+                    if (parentId.Value == command.Id)
+                    {
+                        return false;
+                    }
+
                     var parentCategory = await _categoryRepository.GetCategoryAsync(parentId.Value);
                     return parentCategory != null;
                 })

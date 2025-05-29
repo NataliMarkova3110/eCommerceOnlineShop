@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,7 +12,7 @@ namespace eCommerceOnlineShop.IdentityServer.Migrations
         {
             migrationBuilder.InsertData(
             table: "AspNetRoles",
-            columns: [ "Id", "Name", "NormalizedName" ],
+            columns: ["Id", "Name", "NormalizedName"],
             values: new object[,]
             {
                 { "1", "Manager", "MANAGER" },

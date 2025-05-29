@@ -111,3 +111,25 @@ This project follows Microsoft's C# coding conventions and best practices. The s
 2. Install required tools and extensions
 3. Open the solution in your IDE
 4. The `.editorconfig` file will automatically enforce coding standards
+
+### Pre-push Validation
+
+This project uses git pre-push hooks to ensure code quality and consistency. Before pushing changes, the following validations are performed:
+
+1. **Code Style Validation**: Uses `dotnet-format` to verify that all code follows the project's style guidelines defined in `.editorconfig`.
+
+To set up the pre-push validation:
+
+1. Install the dotnet-format tool globally:
+
+   ```bash
+   dotnet tool install -g dotnet-format
+   ```
+
+2. Install the git hooks:
+   ```bash
+   chmod +x scripts/install-hooks.sh
+   ./scripts/install-hooks.sh
+   ```
+
+If the validation fails, you'll need to run `dotnet format` to fix the issues before pushing your changes.

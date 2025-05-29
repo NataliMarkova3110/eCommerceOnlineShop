@@ -1,4 +1,4 @@
-﻿namespace eCommerceOnlineShop.IdentityServer.Models
+namespace eCommerceOnlineShop.IdentityServer.Models
 {
     public class LoginModel
     {

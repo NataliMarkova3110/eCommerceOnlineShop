@@ -106,10 +106,7 @@ namespace eCommerceOnlineShop.Cart.Controllers
         public async Task<ActionResult> RemoveItemFromCartAsync(string cartKey, int itemId)
         {
             var result = await cartService.RemoveItemFromCartAsync(cartKey, itemId);
-            if (!result)
-                return NotFound();
-
-            return NoContent();
+            return !result ? NotFound() : NoContent();
         }
     }
 }

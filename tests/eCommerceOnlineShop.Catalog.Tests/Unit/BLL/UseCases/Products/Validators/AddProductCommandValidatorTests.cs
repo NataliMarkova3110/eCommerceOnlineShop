@@ -36,7 +36,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void Validate_EmptyName_ShouldHaveValidationError(string name)
+        public void Validate_EmptyName_ShouldHaveValidationError(string? name)
         {
             // Arrange
             var command = new AddProductCommand

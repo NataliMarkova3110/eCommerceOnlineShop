@@ -56,11 +56,15 @@ namespace eCommerceOnlineShop.Cart.BLL.Services
         {
             var cart = await _cartRepository.GetCartAsync(cartKey);
             if (cart == null)
+            {
                 return false;
+            }
 
             var itemToRemove = cart.Items.Find(i => i.Id == itemId);
             if (itemToRemove == null)
+            {
                 return false;
+            }
 
             cart.Items.Remove(itemToRemove);
             await _cartRepository.UpdateCartAsync(cart);

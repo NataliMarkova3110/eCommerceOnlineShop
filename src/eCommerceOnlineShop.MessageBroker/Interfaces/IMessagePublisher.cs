@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 
 namespace eCommerceOnlineShop.MessageBroker.Interfaces
 {
