@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Message
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.Catalog.API", "src\eCommerceOnlineShop.Catalog.API\eCommerceOnlineShop.Catalog.API.csproj", "{94B55AFF-19D0-4542-BE16-D4F183E6E2B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceOnlineShop.IdentityServer", "src\eCommerceOnlineShop.IdentityServer\eCommerceOnlineShop.IdentityServer.csproj", "{D3542F3A-6518-4640-8F94-E18D26DE53CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{94B55AFF-19D0-4542-BE16-D4F183E6E2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94B55AFF-19D0-4542-BE16-D4F183E6E2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94B55AFF-19D0-4542-BE16-D4F183E6E2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3542F3A-6518-4640-8F94-E18D26DE53CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3542F3A-6518-4640-8F94-E18D26DE53CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3542F3A-6518-4640-8F94-E18D26DE53CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3542F3A-6518-4640-8F94-E18D26DE53CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{4732DFFD-1467-4E30-8EA5-00B2EBB28CC9} = {7580F94A-9679-451C-980B-5ED8ADCD973D}
 		{D3447128-7870-46CA-AFBB-A34845B01D03} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
 		{94B55AFF-19D0-4542-BE16-D4F183E6E2B0} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
+		{D3542F3A-6518-4640-8F94-E18D26DE53CC} = {D0579B31-5B76-4A3A-A8D7-A5F5506A690C}
 	EndGlobalSection
 EndGlobal

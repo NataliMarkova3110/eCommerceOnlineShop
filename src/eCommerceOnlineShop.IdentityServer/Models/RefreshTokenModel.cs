@@ -1,0 +1,8 @@
+﻿namespace eCommerceOnlineShop.IdentityServer.Models
+{
+    public class RefreshTokenModel
+    {
+        public string UserId { get; set; }
+        public string RefreshToken { get; set; }
+    }
+}

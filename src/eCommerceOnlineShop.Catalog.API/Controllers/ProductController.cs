@@ -6,23 +6,15 @@ using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.GetProducts;
 using eCommerceOnlineShop.Catalog.BLL.UseCases.Products.UpdateProduct;
 using eCommerceOnlineShop.Catalog.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceOnlineShop.Catalog.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController(IMediator mediator, LinkGenerator linkGenerator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly LinkGenerator _linkGenerator;
-
-        public ProductController(IMediator mediator, LinkGenerator linkGenerator)
-        {
-            _mediator = mediator;
-            _linkGenerator = linkGenerator;
-        }
-
         [HttpGet]
         [ProducesResponseType(typeof(ResourceResponse<IEnumerable<Product>>), StatusCodes.Status200OK)]
         public async Task<ActionResult<ResourceResponse<IEnumerable<Product>>>> GetProducts(
@@ -30,7 +22,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
         {
-            var products = await _mediator.Send(new GetProductsQuery
+            var products = await mediator.Send(new GetProductsQuery
             {
                 CategoryId = categoryId,
                 Page = page,
@@ -42,8 +34,8 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 Data = products,
                 Links =
                 [
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(GetProducts), "Product"), Rel = "self", Method = "GET" },
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(AddProduct), "Product"), Rel = "create-product", Method = "POST" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetProducts), "Product"), Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(AddProduct), "Product"), Rel = "create-product", Method = "POST" }
                 ]
             };
 
@@ -55,7 +47,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ResourceResponse<Product>>> GetProduct(int id)
         {
-            var product = await _mediator.Send(new GetProductCommand { ProductId = id });
+            var product = await mediator.Send(new GetProductCommand { ProductId = id });
             if (product == null)
             {
                 return NotFound();
@@ -66,9 +58,9 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 Data = product,
                 Links =
                 [
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id }), Rel = "self", Method = "GET" },
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id }), Rel = "update-product", Method = "PUT" },
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(DeleteProduct), "Product", new { id }), Rel = "delete-product", Method = "DELETE" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id }), Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id }), Rel = "update-product", Method = "PUT" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteProduct), "Product", new { id }), Rel = "delete-product", Method = "DELETE" }
                 ]
             };
 
@@ -78,18 +70,19 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResourceResponse<Product>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult<ResourceResponse<Product>>> AddProduct(AddProductCommand command)
         {
-            var product = await _mediator.Send(command);
+            var product = await mediator.Send(command);
 
             var response = new ResourceResponse<Product>
             {
                 Data = product,
                 Links =
                 {
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id = product.Id }), Rel = "self", Method = "GET" },
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id = product.Id }), Rel = "update-product", Method = "PUT" },
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(DeleteProduct), "Product", new { id = product.Id }), Rel = "delete-product", Method = "DELETE" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id = product.Id }), Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id = product.Id }), Rel = "update-product", Method = "PUT" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteProduct), "Product", new { id = product.Id }), Rel = "delete-product", Method = "DELETE" }
                 }
             };
 
@@ -100,6 +93,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [ProducesResponseType(typeof(ResourceResponse<Product>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult<ResourceResponse<Product>>> UpdateProduct(int id, UpdateProductCommand command)
         {
             if (id != command.Id)
@@ -107,7 +101,7 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 return BadRequest("Product ID mismatch");
             }
 
-            var product = await _mediator.Send(command);
+            var product = await mediator.Send(command);
             if (product == null)
             {
                 return NotFound();
@@ -118,9 +112,9 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
                 Data = product,
                 Links =
                 {
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id }), Rel = "self", Method = "GET" },
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id }), Rel = "update-product", Method = "PUT" },
-                    new() { Href = _linkGenerator.GetPathByAction(nameof(DeleteProduct), "Product", new { id }), Rel = "delete-product", Method = "DELETE" }
+                    new() { Href = linkGenerator.GetPathByAction(nameof(GetProduct), "Product", new { id }), Rel = "self", Method = "GET" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(UpdateProduct), "Product", new { id }), Rel = "update-product", Method = "PUT" },
+                    new() { Href = linkGenerator.GetPathByAction(nameof(DeleteProduct), "Product", new { id }), Rel = "delete-product", Method = "DELETE" }
                 }
             };
 
@@ -130,9 +124,10 @@ namespace eCommerceOnlineShop.Catalog.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var result = await _mediator.Send(new DeleteProductCommand { ProductId = id });
+            var result = await mediator.Send(new DeleteProductCommand { ProductId = id });
             if (!result)
             {
                 return NotFound();
