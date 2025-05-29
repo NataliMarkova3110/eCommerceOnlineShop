@@ -17,7 +17,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         }
 
         [Fact]
-        public async Task GetCartItemsAsync_WhenCartExists_ReturnsItems()
+        public async Task GetCartItemsAsync_WhenCartExists_ReturnsItemsAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();
@@ -35,7 +35,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         }
 
         [Fact]
-        public async Task GetCartItemsAsync_WhenCartDoesNotExist_ReturnsEmptyList()
+        public async Task GetCartItemsAsync_WhenCartDoesNotExist_ReturnsEmptyListAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid().ToString();
@@ -50,7 +50,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         }
 
         [Fact]
-        public async Task AddItemToCartAsync_WhenCartDoesNotExist_CreatesNewCart()
+        public async Task AddItemToCartAsync_WhenCartDoesNotExist_CreatesNewCartAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();
@@ -72,7 +72,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         }
 
         [Fact]
-        public async Task AddItemToCartAsync_WhenItemExists_UpdatesQuantity()
+        public async Task AddItemToCartAsync_WhenItemExists_UpdatesQuantityAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();
@@ -96,7 +96,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         }
 
         [Fact]
-        public async Task RemoveItemFromCartAsync_WhenItemExists_RemovesItem()
+        public async Task RemoveItemFromCartAsync_WhenItemExists_RemovesItemAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();
@@ -119,7 +119,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         }
 
         [Fact]
-        public async Task RemoveItemFromCartAsync_WhenItemDoesNotExist_ReturnsFalse()
+        public async Task RemoveItemFromCartAsync_WhenItemDoesNotExist_ReturnsFalseAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();

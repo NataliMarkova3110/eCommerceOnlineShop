@@ -18,7 +18,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Handlers
         }
 
         [Fact]
-        public async Task TryHandleAsync_ArgumentNullException_ReturnsBadRequest()
+        public async Task TryHandleAsync_ArgumentNullException_ReturnsBadRequestAsync()
         {
             // Arrange
             var context = new DefaultHttpContext();
@@ -42,7 +42,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Handlers
         }
 
         [Fact]
-        public async Task TryHandleAsync_UnknownException_ReturnsInternalServerError()
+        public async Task TryHandleAsync_UnknownException_ReturnsInternalServerErrorAsync()
         {
             // Arrange
             var context = new DefaultHttpContext();

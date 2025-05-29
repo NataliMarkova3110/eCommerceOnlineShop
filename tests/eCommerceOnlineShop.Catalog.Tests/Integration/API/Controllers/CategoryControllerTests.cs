@@ -40,7 +40,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
         }
 
         [Fact]
-        public async Task GetCategories_ReturnsCorrectLinks()
+        public async Task GetCategories_ReturnsCorrectLinksAsync()
         {
             // Arrange
             var categories = new List<Category>
@@ -63,7 +63,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
         }
 
         [Fact]
-        public async Task GetCategory_ReturnsCorrectLinks()
+        public async Task GetCategory_ReturnsCorrectLinksAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -83,7 +83,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
         }
 
         [Fact]
-        public async Task AddCategory_ReturnsCorrectLinks()
+        public async Task AddCategory_ReturnsCorrectLinksAsync()
         {
             // Arrange
             var command = new AddCategoryCommand
@@ -105,7 +105,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
         }
 
         [Fact]
-        public async Task UpdateCategory_ReturnsCorrectLinks()
+        public async Task UpdateCategory_ReturnsCorrectLinksAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -132,17 +132,17 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
         }
 
         [Fact]
-        public async Task DeleteCategory_ReturnsNotFound_WhenCategoryDoesNotExist()
+        public async Task DeleteCategory_ReturnsNotFound_WhenCategoryDoesNotExistAsync()
         {
             // Act
             var result = await _controller.DeleteCategoryAsync(999);
 
             // Assert
-            Assert.IsType<NotFoundResult>(result.ExecuteResultAsync);
+            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
-        public async Task DeleteCategory_DeletesCategoryAndRelatedProducts()
+        public async Task DeleteCategory_DeletesCategoryAndRelatedProductsAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -164,7 +164,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.API.Controllers
             var result = await _controller.DeleteCategoryAsync(category.Id);
 
             // Assert
-            Assert.IsType<NoContentResult>(result.ExecuteResultAsync);
+            Assert.IsType<NoContentResult>(result);
             Assert.Null(await _context.Categories.FindAsync(category.Id));
             Assert.Empty(await _context.Products.Where(p => p.CategoryId == category.Id).ToListAsync());
         }

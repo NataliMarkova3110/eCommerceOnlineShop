@@ -39,7 +39,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration
         }
 
         [Fact]
-        public async Task CatalogOperations_CompleteFlow_Success()
+        public async Task CatalogOperations_CompleteFlow_SuccessAsync()
         {
             var addCategoryCommand = new AddCategoryCommand
             {

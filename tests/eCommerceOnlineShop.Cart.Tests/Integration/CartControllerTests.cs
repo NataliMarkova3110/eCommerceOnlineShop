@@ -8,11 +8,10 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
 {
     public class CartControllerTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory = factory;
         private readonly HttpClient _client = factory.CreateClient();
 
         [Fact]
-        public async Task GetCart_ReturnsOk()
+        public async Task GetCart_ReturnsOkAsync()
         {
             // Act
             var response = await _client.GetAsync("/api/v1/cart");
@@ -23,7 +22,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         }
 
         [Fact]
-        public async Task AddItemToCart_ValidItem_ReturnsOk()
+        public async Task AddItemToCart_ValidItem_ReturnsOkAsync()
         {
             // Arrange
             var item = new
@@ -49,7 +48,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         }
 
         [Fact]
-        public async Task AddItemToCart_InvalidItem_ReturnsBadRequest()
+        public async Task AddItemToCart_InvalidItem_ReturnsBadRequestAsync()
         {
             // Arrange
             var invalidItem = new
@@ -70,7 +69,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         }
 
         [Fact]
-        public async Task RemoveItemFromCart_ValidItem_ReturnsOk()
+        public async Task RemoveItemFromCart_ValidItem_ReturnsOkAsync()
         {
             // Arrange
             var productId = 1;
@@ -83,7 +82,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         }
 
         [Fact]
-        public async Task RemoveItemFromCart_NonExistentItem_ReturnsNotFound()
+        public async Task RemoveItemFromCart_NonExistentItem_ReturnsNotFoundAsync()
         {
             // Arrange
             var nonExistentProductId = 999;

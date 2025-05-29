@@ -69,7 +69,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         }
 
         [Fact]
-        public async Task CompleteFlow_AddItemToCart_ShouldWork()
+        public async Task CompleteFlow_AddItemToCart_ShouldWorkAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();
@@ -104,7 +104,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         }
 
         [Fact]
-        public async Task CompleteFlow_GetCartItems_ShouldWork()
+        public async Task CompleteFlow_GetCartItems_ShouldWorkAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();
@@ -137,7 +137,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         }
 
         [Fact]
-        public async Task CompleteFlow_RemoveItemFromCart_ShouldWork()
+        public async Task CompleteFlow_RemoveItemFromCart_ShouldWorkAsync()
         {
             // Arrange
             var cartId = Guid.NewGuid();
