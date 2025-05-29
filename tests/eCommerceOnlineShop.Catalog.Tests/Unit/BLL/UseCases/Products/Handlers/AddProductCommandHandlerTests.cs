@@ -23,7 +23,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Handlers
         }
 
         [Fact]
-        public async Task Handle_ValidCommand_CreatesProduct()
+        public async Task Handle_ValidCommand_CreatesProductAsync()
         {
             // Arrange
             var command = new AddProductCommand

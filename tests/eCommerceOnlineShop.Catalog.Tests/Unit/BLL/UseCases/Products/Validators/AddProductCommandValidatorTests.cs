@@ -14,7 +14,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
         }
 
         [Fact]
-        public void Validate_ValidCommand_ShouldNotHaveValidationError()
+        public void Validate_ValidCommand_ShouldNotHaveValidationErrorAsync()
         {
             // Arrange
             var command = new AddProductCommand
@@ -36,7 +36,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void Validate_EmptyName_ShouldHaveValidationError(string? name)
+        public void Validate_EmptyName_ShouldHaveValidationErrorAsync(string? name)
         {
             // Arrange
             var command = new AddProductCommand
@@ -58,7 +58,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void Validate_InvalidPrice_ShouldHaveValidationError(decimal price)
+        public void Validate_InvalidPrice_ShouldHaveValidationErrorAsync(decimal price)
         {
             // Arrange
             var command = new AddProductCommand
@@ -80,7 +80,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void Validate_InvalidCategoryId_ShouldHaveValidationError(int categoryId)
+        public void Validate_InvalidCategoryId_ShouldHaveValidationErrorAsync(int categoryId)
         {
             // Arrange
             var command = new AddProductCommand

@@ -25,7 +25,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.BLL.UseCases.Categories.
         }
 
         [Fact]
-        public async Task Handle_DeletesCategoryAndRelatedProducts()
+        public async Task Handle_DeletesCategoryAndRelatedProductsAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -55,7 +55,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Integration.BLL.UseCases.Categories.
         }
 
         [Fact]
-        public async Task Handle_ReturnsFalse_WhenCategoryNotFound()
+        public async Task Handle_ReturnsFalse_WhenCategoryNotFoundAsync()
         {
             // Arrange
             var command = new DeleteCategoryCommand { CategoryId = 999 };

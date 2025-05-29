@@ -22,7 +22,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task GetProductAsync_ReturnsProduct_WhenExists()
+        public async Task GetProductAsync_ReturnsProduct_WhenExistsAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -50,7 +50,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task GetProductAsync_ReturnsNull_WhenNotExists()
+        public async Task GetProductAsync_ReturnsNull_WhenNotExistsAsync()
         {
             // Act
             var result = await _repository.GetProductAsync(999);
@@ -60,7 +60,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task GetProductsAsync_ReturnsAllProducts()
+        public async Task GetProductsAsync_ReturnsAllProductsAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -83,7 +83,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task GetProductsByCategoryAsync_ReturnsProductsForCategory()
+        public async Task GetProductsByCategoryAsync_ReturnsProductsForCategoryAsync()
         {
             // Arrange
             var category1 = new Category { Name = "Category 1" };
@@ -109,7 +109,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task CreateProductAsync_CreatesProduct()
+        public async Task CreateProductAsync_CreatesProductAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -140,7 +140,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task UpdateProductAsync_UpdatesProduct()
+        public async Task UpdateProductAsync_UpdatesProductAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
@@ -174,7 +174,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.DAL.Repositories
         }
 
         [Fact]
-        public async Task DeleteProductAsync_DeletesProduct()
+        public async Task DeleteProductAsync_DeletesProductAsync()
         {
             // Arrange
             var category = new Category { Name = "Test Category" };
