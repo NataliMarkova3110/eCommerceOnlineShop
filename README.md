@@ -133,3 +133,26 @@ To set up the pre-push validation:
    ```
 
 If the validation fails, you'll need to run `dotnet format` to fix the issues before pushing your changes.
+
+### Code Quality Analysis with SonarQube
+
+This project uses SonarQube for code quality analysis. To set up SonarQube locally:
+
+1. Install Docker and Docker Compose if not already installed
+2. Start SonarQube:
+   ```bash
+   docker-compose up -d
+   ```
+3. Wait for SonarQube to start (it may take a few minutes)
+4. Access SonarQube at http://localhost:9000
+   - Default credentials: admin/admin
+   - You'll be prompted to change the password on first login
+
+To run code analysis:
+
+```bash
+chmod +x scripts/run-sonar-analysis.sh
+./scripts/run-sonar-analysis.sh
+```
+
+The analysis results will be available in the SonarQube dashboard.
