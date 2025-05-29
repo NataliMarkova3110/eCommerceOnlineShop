@@ -54,7 +54,6 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddMessageBroker(builder.Configuration);
-builder.Services.AddHostedService<ProductUpdateHandler>();
 
 var app = builder.Build();
 

@@ -1,6 +1,6 @@
 namespace eCommerceOnlineShop.MessageBroker.Configuration
 {
-    public class ServiceBusSettings
+    public class ServiceBusSettings // appsettings.Development.json, which are not commited
     {
         public string ConnectionString { get; set; } = string.Empty;
         public string QueueName { get; set; } = string.Empty;

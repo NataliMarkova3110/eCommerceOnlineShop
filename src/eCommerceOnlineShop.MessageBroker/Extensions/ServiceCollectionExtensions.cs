@@ -12,7 +12,7 @@ namespace eCommerceOnlineShop.MessageBroker.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<ServiceBusSettings>(configuration.GetSection("AzureServiceBus"));
+            services.Configure<ServiceBusSettings>(configuration.GetSection("AzureServiceBus")); // appsettings.Development.json, which are not commited
 
             services.AddSingleton<IMessagePublisher, MessagePublisher>();
             services.AddSingleton<IMessageListener, MessageListener>();
