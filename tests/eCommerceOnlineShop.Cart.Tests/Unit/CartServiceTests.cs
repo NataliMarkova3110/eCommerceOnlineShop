@@ -21,7 +21,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
-            List<CartItem> expectedItems = [new() { Id = 1, ProductName = "Test Item", Price = 10.99m, Quantity = 2 }];
+            List<CartItem> expectedItems = [new() { Id = 1, ProductName = "Test Item", Price = 10.99m, Quantity = 2, ProductId = 1 }];
             var cart = new CartEntity { Id = cartId, CartKey = cartId.ToString(), Items = expectedItems };
 
             _mockRepository.Setup(r => r.GetCartAsync(cartId.ToString()))
@@ -40,7 +40,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
             // Arrange
             var cartId = Guid.NewGuid().ToString();
             _mockRepository.Setup(r => r.GetCartAsync(cartId))
-                .ReturnsAsync((CartEntity)null);
+                .ReturnsAsync(() => (CartEntity?)null);
 
             // Act
             var result = await _cartService.GetCartItemsAsync(cartId);
@@ -54,10 +54,10 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
         {
             // Arrange
             var cartId = Guid.NewGuid();
-            var newItem = new CartItem { Id = 1, ProductName = "New Item", Price = 15.99m, Quantity = 1 };
+            var newItem = new CartItem { Id = 1, ProductName = "New Item", Price = 15.99m, Quantity = 1, ProductId = 1 };
 
             _mockRepository.Setup(r => r.GetCartAsync(cartId.ToString()))
-                .ReturnsAsync((CartEntity)null);
+                .ReturnsAsync((CartEntity?)null);
 
 
             // Act
@@ -77,9 +77,9 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
             // Arrange
             var cartId = Guid.NewGuid();
             var cartKey = cartId.ToString();
-            var existingItem = new CartItem { Id = 1, ProductName = "Existing Item", Price = 10.99m, Quantity = 2 };
+            var existingItem = new CartItem { Id = 1, ProductName = "Existing Item", Price = 10.99m, Quantity = 2, ProductId = 1 };
             var cart = new CartEntity { Id = cartId, CartKey = cartKey, Items = [existingItem] };
-            var newItem = new CartItem { Id = 1, ProductName = "Existing Item", Price = 10.99m, Quantity = 3 };
+            var newItem = new CartItem { Id = 1, ProductName = "Existing Item", Price = 10.99m, Quantity = 3, ProductId = 1 };
 
             _mockRepository.Setup(r => r.GetCartAsync(cartKey))
                 .ReturnsAsync(cart);
@@ -102,7 +102,7 @@ namespace eCommerceOnlineShop.Cart.Tests.Unit
             var cartId = Guid.NewGuid();
             var cartKey = cartId.ToString();
             var itemId = 1;
-            var itemToRemove = new CartItem { Id = itemId, ProductName = "Item to Remove", Price = 10.99m, Quantity = 1 };
+            var itemToRemove = new CartItem { Id = itemId, ProductName = "Item to Remove", Price = 10.99m, Quantity = 1, ProductId = 1 };
             var cart = new CartEntity { Id = cartId, CartKey = cartKey, Items = [itemToRemove] };
 
             _mockRepository.Setup(r => r.GetCartAsync(cartKey))

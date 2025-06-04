@@ -37,4 +37,4 @@ app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
 
-app.Run();
+await app.RunAsync();

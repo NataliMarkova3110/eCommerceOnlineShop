@@ -41,7 +41,7 @@ namespace eCommerceOnlineShop.Catalog.Tests.Unit.BLL.UseCases.Products.Validator
             // Arrange
             var command = new AddProductCommand
             {
-                Name = name,
+                Name = name!,
                 Description = "Test Description",
                 Price = 10.99m,
                 CategoryId = 1,

@@ -55,7 +55,7 @@ namespace eCommerceOnlineShop.MessageBroker.Services
                     };
 
                     await sender.SendMessageAsync(serviceBusMessage);
-                    _logger.LogInformation($"Message published to topic {topicName}: {jsonMessage}");
+                    _logger.LogInformation("Message published to topic {TopicName}: {Message}", topicName, jsonMessage);
                     return;
                 }
                 catch (Exception ex)
@@ -63,10 +63,12 @@ namespace eCommerceOnlineShop.MessageBroker.Services
                     retryCount++;
                     if (retryCount >= _settings.MaxRetryAttempts)
                     {
-                        _logger.LogError(ex, $"Failed to publish message to topic {topicName} after {_settings.MaxRetryAttempts} attempts");
+                        _logger.LogError(ex, "Failed to publish message to topic {TopicName} after {MaxRetries} attempts",
+                            topicName, _settings.MaxRetryAttempts);
                         throw;
                     }
-                    _logger.LogWarning(ex, $"Failed to publish message to topic {topicName}, attempt {retryCount}/{_settings.MaxRetryAttempts}");
+                    _logger.LogWarning(ex, "Failed to publish message to topic {TopicName}, attempt {RetryCount}/{MaxRetries}",
+                        topicName, retryCount, _settings.MaxRetryAttempts);
                     await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, retryCount))); // Exponential backoff
                 }
             }

@@ -1,6 +1,8 @@
+using eCommerceOnlineShop.Cart.Core.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
@@ -72,13 +74,36 @@ namespace eCommerceOnlineShop.Cart.Tests.Integration
         public async Task RemoveItemFromCart_ValidItem_ReturnsOkAsync()
         {
             // Arrange
+            var cartKey = Guid.NewGuid().ToString();
             var productId = 1;
+            var item = new CartItem
+            {
+                Id = productId,
+                ProductId = productId,
+                ProductName = "Test Product",
+                Price = 10.99m,
+                Quantity = 2
+            };
+
+            // First add an item to the cart
+            var addContent = new StringContent(
+                JsonSerializer.Serialize(item),
+                Encoding.UTF8,
+                "application/json");
+            await _client.PostAsync($"/api/v1/cart/{cartKey}/items", addContent);
 
             // Act
-            var response = await _client.DeleteAsync($"/api/v1/cart/items/{productId}");
+            var response = await _client.DeleteAsync($"/api/v1/cart/{cartKey}/items/{productId}");
 
             // Assert
             response.EnsureSuccessStatusCode();
+
+            // Verify the item was removed by trying to get it
+            var getResponse = await _client.GetAsync($"/api/v1/cart/{cartKey}");
+            getResponse.EnsureSuccessStatusCode();
+            var cart = await getResponse.Content.ReadFromJsonAsync<CartEntity>();
+            Assert.NotNull(cart);
+            Assert.Empty(cart.Items);
         }
 
         [Fact]

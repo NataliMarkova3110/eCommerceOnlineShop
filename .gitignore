@@ -58,3 +58,9 @@ appsettings.Development.json
 
 #VS
 .vs/
+
+# SonarQube
+.sonarqube/
+.sonar/
+sonar-project.properties
+.scannerwork/

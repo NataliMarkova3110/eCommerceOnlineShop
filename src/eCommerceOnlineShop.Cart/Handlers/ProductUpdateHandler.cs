@@ -3,6 +3,7 @@ using eCommerceOnlineShop.MessageBroker.Interfaces;
 using eCommerceOnlineShop.MessageBroker.Messages;
 using eCommerceOnlineShop.MessageBroker.Configuration;
 using Microsoft.Extensions.Options;
+using eCommerceOnlineShop.Cart.Core.Exceptions;
 
 namespace eCommerceOnlineShop.Cart.Handlers
 {
@@ -12,7 +13,6 @@ namespace eCommerceOnlineShop.Cart.Handlers
         ILogger<ProductUpdateHandler> logger,
         IOptions<ServiceBusSettings> settings) : BackgroundService
     {
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             await messageListener.StartListeningAsync<ProductUpdateMessage>(
@@ -22,30 +22,71 @@ namespace eCommerceOnlineShop.Cart.Handlers
                 {
                     try
                     {
-                        logger.LogInformation("Received product update: {ProductId}", message.ProductId);
+                        logger.LogInformation("Received product update for product {ProductId}", message.ProductId);
 
                         var carts = await cartRepository.GetAllCartsAsync();
+                        var updatedCarts = 0;
+                        var removedItems = 0;
+
                         foreach (var cart in carts)
                         {
-                            var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == message.ProductId);
-                            if (cartItem != null)
+                            try
                             {
-                                cartItem.ProductName = message.Name;
-                                cartItem.Price = message.Price;
-
-                                if (message.Amount == 0)
+                                var cartItem = cart.Items.FirstOrDefault(i => i.ProductId == message.ProductId);
+                                if (cartItem != null)
                                 {
-                                    cart.Items.Remove(cartItem);
-                                }
+                                    cartItem.ProductName = message.Name;
+                                    cartItem.Price = message.Price;
 
-                                await cartRepository.UpdateCartAsync(cart);
+                                    if (message.Amount == 0)
+                                    {
+                                        cart.Items.Remove(cartItem);
+                                        removedItems++;
+                                        logger.LogInformation(
+                                            "Removed out-of-stock product {ProductId} from cart {CartKey}",
+                                            message.ProductId,
+                                            cart.CartKey);
+                                    }
+
+                                    await cartRepository.UpdateCartAsync(cart);
+                                    updatedCarts++;
+                                }
+                            }
+                            catch (Exception cartEx)
+                            {
+                                logger.LogError(
+                                    cartEx,
+                                    "Failed to update cart {CartKey} for product {ProductId}. Cart will be skipped.",
+                                    cart.CartKey,
+                                    message.ProductId);
                             }
                         }
+
+                        logger.LogInformation(
+                            "Product update completed for product {ProductId}. Updated {UpdatedCarts} carts, removed {RemovedItems} items.",
+                            message.ProductId,
+                            updatedCarts,
+                            removedItems);
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError(ex, $"Error processing product update for product {message.ProductId}");
-                        throw;
+                        var errorContext = new
+                        {
+                            ProductId = message.ProductId,
+                            ProductName = message.Name,
+                            Price = message.Price,
+                            Amount = message.Amount
+                        };
+
+                        logger.LogError(
+                            ex,
+                            "Failed to process product update. Context: {@ErrorContext}",
+                            errorContext);
+
+                        throw new ProductUpdateException(
+                            $"Failed to process product update for product {message.ProductId}",
+                            ex,
+                            errorContext);
                     }
                 });
         }

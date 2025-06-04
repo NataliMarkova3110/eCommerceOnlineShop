@@ -17,8 +17,8 @@ namespace eCommerceOnlineShop.IdentityServer.Services
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, user.Id),
-                new(ClaimTypes.Email, user.Email),
-                new(ClaimTypes.Name, user.UserName)
+                new(ClaimTypes.Email, user.Email ?? string.Empty),
+                new(ClaimTypes.Name, user.UserName ?? string.Empty)
             };
 
             foreach (var role in roles)
@@ -26,7 +26,8 @@ namespace eCommerceOnlineShop.IdentityServer.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]
+                ?? throw new InvalidOperationException("JWT key is not configured. Please set the 'Jwt:Key' configuration value.")));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddHours(1);
 
