@@ -1,14 +1,98 @@
 version: "3.8"
 
 services:
+  # SQL Server for Catalog service
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - ecommerce_net
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "YourStrong@Passw0rd" -Q "SELECT 1" -b -o /dev/null
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # Identity Server
+  identityserver:
+    build:
+      context: ./src
+      dockerfile: eCommerceOnlineShop.IdentityServer/Dockerfile
+    container_name: identityserver
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - ecommerce_net
+
+  # Catalog API
+  catalog-api:
+    build:
+      context: ./src
+      dockerfile: eCommerceOnlineShop.Catalog.API/Dockerfile
+    container_name: catalog-api
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5001
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EShopDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;
+      - Identity__Authority=http://identityserver:5000
+      - Identity__Audience=catalog
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      identityserver:
+        condition: service_started
+    networks:
+      - ecommerce_net
+
+  # Cart Service
+  cart-service:
+    build:
+      context: ./src
+      dockerfile: eCommerceOnlineShop.Cart/Dockerfile
+    container_name: cart-service
+    ports:
+      - "5002:5002"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5002
+      - ConnectionStrings__LiteDb=Filename=/app/data/Cart.db;Connection=shared
+      - Jwt__Issuer=http://identityserver:5000
+      - Jwt__Audience=cart
+      - Jwt__Key=your-256-bit-secret
+    volumes:
+      - cart_data:/app/data
+    depends_on:
+      identityserver:
+        condition: service_started
+    networks:
+      - ecommerce_net
+
+  # SonarQube services
   sonarqube:
     image: sonarqube:community
     hostname: sonarqube
     container_name: sonarqube
     depends_on:
-      - db
+      - sonar-db
     environment:
-      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      SONAR_JDBC_URL: jdbc:postgresql://sonar-db:5432/sonar
       SONAR_JDBC_USERNAME: sonar
       SONAR_JDBC_PASSWORD: sonar
     volumes:
@@ -18,13 +102,13 @@ services:
     ports:
       - "9000:9000"
     networks:
-      - sonarnet
+      - ecommerce_net
     ulimits:
       nofile:
         soft: 65536
         hard: 65536
 
-  db:
+  sonar-db:
     image: postgres:12
     hostname: postgresql
     container_name: postgresql
@@ -36,15 +120,17 @@ services:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
     networks:
-      - sonarnet
+      - ecommerce_net
 
 networks:
-  sonarnet:
+  ecommerce_net:
     driver: bridge
 
 volumes:
+  sqlserver_data:
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_logs:
   postgresql:
   postgresql_data:
+  cart_data:
